@@ -12,9 +12,6 @@ resource "random_string" "sufix" {
   special = false
 }
 
-
-
-
 data "aws_iam_policy_document" "ec2" {
 
   statement {
@@ -278,7 +275,7 @@ resource "aws_iam_policy_attachment" "attachment" {
     "arn:${local.partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   ] : idx => role }, {})
 
-  name = join("", aws_iam_role.ec2[*].name)
+  name = join("", aws_iam_role.ec2[*].name, "-", idx)
 
   policy_arn = each.value
 
@@ -290,11 +287,13 @@ resource "aws_iam_policy_attachment" "attachment" {
 }
 
 resource "aws_iam_policy_attachment" "service" {
-  for_each = {
-    AWSElasticBeanstalkEnhancedHealth = "arn:${local.partition}:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth",
-    policy_arn                        = "arn:${local.partition}:iam::aws:policy/AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy"
-  }
-  name       = join("", aws_iam_role.ec2[*].name)
+
+  for_each = try({ for idx, role in [
+    "arn:${local.partition}:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth",
+    "arn:${local.partition}:iam::aws:policy/AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy"
+  ] : idx => role }, {})
+
+  name = join("", aws_iam_role.ec2[*].name, "-", idx)
   policy_arn = each.value
   depends_on = [aws_iam_instance_profile.profile, aws_iam_role.ec2]
 }

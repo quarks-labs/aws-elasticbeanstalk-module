@@ -1,3 +1,7 @@
+###########################################################
+#              SETTINGS PARAMETERS EB                     #
+###########################################################
+
 locals {
   settings = concat([
     {
@@ -369,7 +373,7 @@ resource "aws_elastic_beanstalk_environment" "this" {
   description            = local.application_name
   application            = aws_elastic_beanstalk_application.this.name
   solution_stack_name    = try(var.solution_stack_name, "64bit Amazon Linux 2023 v4.3.4 running Docker ")
-  wait_for_ready_timeout = "40m"
+  wait_for_ready_timeout = try(var.wait_for_ready_timeout, "40m")
 
   dynamic "setting" {
     for_each = try(local.settings_no_resource, {})
