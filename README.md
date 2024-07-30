@@ -1,6 +1,6 @@
-# AWS Elastic BeanStalk Module
+# AWS Elastic Beanstalk Module
 
-Terraform module which creates ELB.
+Terraform module which creates Elastic Beanstalk
 
 ## Usage
 
