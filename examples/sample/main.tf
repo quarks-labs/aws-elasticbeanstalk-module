@@ -41,7 +41,7 @@ module "vpc" {
 
 
 module "elastic_beanstalk" {
-  source                 = "../.."
+  source                 = "git::git@github.com:quarks-labs/aws-elasticbeanstalk-module.git"
   name                   = local.name
   solution_stack_name    = local.solution_stack_name
   region                 = local.region
