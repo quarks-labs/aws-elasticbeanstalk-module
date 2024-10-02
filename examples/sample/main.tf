@@ -20,8 +20,7 @@ locals {
 ###########################################################
 
 module "vpc" {
-  source                               = "terraform-aws-modules/vpc/aws"
-  version                              = "~> 5.0.0"
+  source                               = "git::git@github.com:quarks-labs/gcp-container-cluster-module.git"
   name                                 = local.name
   cidr                                 = local.cidr
   azs                                  = ["${local.region}a", "${local.region}b"]
